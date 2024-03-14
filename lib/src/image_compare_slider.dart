@@ -228,48 +228,47 @@ class _ImageCompareSliderState extends State<ImageCompareSlider> {
         widget.itemTwoBuilder?.call(generatedSecondImage, context) ??
             generatedSecondImage;
 
-    final child = ClipRRect(
-      borderRadius: widget.photoRadius,
-      child: GestureDetector(
-        onTapDown: (details) => onDetection(details.globalPosition),
-        onPanUpdate: (details) => onDetection(details.globalPosition),
-        onPanEnd: (_) => updatePosition(position),
-        child: Stack(
-          children: [
-            ClipRect(
-              clipper: _SliderClipper.inverted(
-                position: position,
-                direction: widget.direction,
-              ),
-              child: firstImage,
+    final child = GestureDetector(
+      onTapDown: (details) => onDetection(details.globalPosition),
+      onPanUpdate: (details) => onDetection(details.globalPosition),
+      onPanEnd: (_) => updatePosition(position),
+      child: Stack(
+        children: [
+          ClipRect(
+            clipper: _SliderClipper.inverted(
+              position: position,
+              direction: widget.direction,
             ),
-            ClipRect(
-              clipper: _SliderClipper(
-                position: position,
-                direction: widget.direction,
-              ),
-              child: secondImage,
+            child:
+                ClipRRect(borderRadius: widget.photoRadius, child: firstImage),
+          ),
+          ClipRect(
+            clipper: _SliderClipper(
+              position: position,
+              direction: widget.direction,
             ),
-            CustomPaint(
-              painter: _DividerPainter(
-                position: position,
-                color: widget.dividerColor,
-                handleColor: widget.handleColor ?? widget.dividerColor,
-                handleOutlineColor: widget.handleOutlineColor ??
-                    widget.handleColor ??
-                    widget.dividerColor,
-                strokeWidth: widget.dividerWidth,
-                portrait: widget.portrait,
-                fillHandle: widget.fillHandle,
-                handleSize: widget.handleSize,
-                hideHandle: widget.hideHandle,
-                handlePosition: handlePosition,
-                handleRadius: widget.handleRadius,
-              ),
-              child: Opacity(opacity: 0, child: secondImage),
+            child:
+                ClipRRect(borderRadius: widget.photoRadius, child: secondImage),
+          ),
+          CustomPaint(
+            painter: _DividerPainter(
+              position: position,
+              color: widget.dividerColor,
+              handleColor: widget.handleColor ?? widget.dividerColor,
+              handleOutlineColor: widget.handleOutlineColor ??
+                  widget.handleColor ??
+                  widget.dividerColor,
+              strokeWidth: widget.dividerWidth,
+              portrait: widget.portrait,
+              fillHandle: widget.fillHandle,
+              handleSize: widget.handleSize,
+              hideHandle: widget.hideHandle,
+              handlePosition: handlePosition,
+              handleRadius: widget.handleRadius,
             ),
-          ],
-        ),
+            child: Opacity(opacity: 0, child: secondImage),
+          ),
+        ],
       ),
     );
 
